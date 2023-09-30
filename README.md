@@ -4,7 +4,7 @@ frontend of ReinLife
 
 ReinLife is an cross-platform open source mobile Health app and research platform.
 
-The backend is written in Python (Flask) and can be found at XXX.
+The backend is written in Python (Flask) and can be found at [reinlife_flask](https://github.com/boerz-coding/reinlife_flask/tree/main).
 
 ## Current version of development tools
 Should be found in pubspec.yaml. I(Boer) am using Flutter 3.15.0, Java16, cocoapod 1.13.0, and Android Studio 17.0.6. 
