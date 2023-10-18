@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:notificationpractice/pages/survey_page.dart';
+import '../pages/survey_page.dart';
 
 class HomePageWidget extends StatefulWidget {
   const HomePageWidget({Key? key}) : super(key: key);
