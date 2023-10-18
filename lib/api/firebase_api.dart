@@ -1,6 +1,7 @@
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:notificationpractice/main.dart';
+
+import '../main.dart';
 
 class FirebaseApi{
   // create an instance of Firebase Messaging
