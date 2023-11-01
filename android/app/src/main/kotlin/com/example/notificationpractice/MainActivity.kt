@@ -1,4 +1,4 @@
-package com.example.reinlife_flutter
+package com.example.notificationpractice
 
 import io.flutter.embedding.android.FlutterActivity
 

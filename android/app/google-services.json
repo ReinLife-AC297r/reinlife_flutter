@@ -64,25 +64,6 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:813541267076:android:08730c48208d40aa6554d1",
-        "android_client_info": {
-          "package_name": "com.example.pushnotofocation"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDMLkMyU_8a0nCyKRtSzjRow8Ile307fpk"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:813541267076:android:40d34152ac615d726554d1",
         "android_client_info": {
           "package_name": "com.example.reinlife"

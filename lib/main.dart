@@ -1,11 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import '../api/firebase_api.dart';
-import '../firebase_options.dart';
-import '../pages/home_page.dart';
-import '../pages/newhome_page.dart';
-import '../pages/notifcation_page.dart';
-import '../pages/survey_page.dart';
+import 'package:notificationpractice/api/firebase_api.dart';
+import 'package:notificationpractice/firebase_options.dart';
+import 'package:notificationpractice/pages/home_page.dart';
+import 'package:notificationpractice/pages/newhome_page.dart';
+import 'package:notificationpractice/pages/notifcation_page.dart';
+import 'package:notificationpractice/pages/survey_page.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 

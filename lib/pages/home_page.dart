@@ -10,7 +10,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   final FirestoreService firestoreService = FirestoreService();
 
   //text controller
