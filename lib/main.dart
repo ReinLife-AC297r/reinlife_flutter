@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: HomePageWidget(),
       navigatorKey: navigatorKey,
       routes:{
         '/notification_screen':(context) => const SurveypageWidget(),
