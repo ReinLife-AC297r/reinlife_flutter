@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import '../pages/survey_page.dart';
+import '../services/firestore.dart';
 
 class HomePageWidget extends StatefulWidget {
   const HomePageWidget({Key? key}) : super(key: key);
@@ -14,6 +16,32 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   double sliderValue1 = 5.0;
   double sliderValue2 = 5.0;
   double sliderValue3 = 5.0;
+
+  final FirestoreService firestoreService = FirestoreService();
+
+  //text controller
+  final TextEditingController textController = TextEditingController();
+
+
+  void openNoteBox() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: TextField(
+          controller: textController,
+        ),
+        actions:[
+          ElevatedButton(onPressed: (){
+            // add a new note
+            firestoreService.addNote(textController.text);
+            textController.clear();
+            Navigator.pop(context);
+          },
+              child: Text("Add"))
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +96,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: openNoteBox,
+        child:Icon(Icons.add),
       ),
     );
   }
