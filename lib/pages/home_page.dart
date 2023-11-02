@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../pages/survey_page.dart';
 import '../services/firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
