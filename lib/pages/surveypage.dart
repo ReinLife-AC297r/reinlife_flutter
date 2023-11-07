@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:notificationpractice/pages/home_page.dart';
 import './question_widget.dart';
@@ -38,16 +39,18 @@ class _SurveyPageState extends State<SurveyPage> {
     // Obtain the device token
     String deviceToken = await FirebaseMessaging.instance.getToken() ?? 'unknown_device';
 
-    // Format the current date as a string
-    String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    String currentTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
 
-    // Save the array of responses under the key 'checkin1'
+    // Get the current timestamp
+    Timestamp currentTimestamp = Timestamp.fromDate(DateTime.now()); // For Firestore timestamp
+
     Map<String, dynamic> dataToSave = {
-      'checkin1': _responses,
+      'answers': _responses,
+      'timestamp': currentTimestamp, // Adding the timestamp here
     };
 
     // Use the device token as the userId and current date as the documentId
-    _firestoreService.saveAnswers(deviceToken, currentDate, dataToSave).then((_) {
+    _firestoreService.saveAnswers(deviceToken, currentTime, dataToSave).then((_) {
       // Handle successful save
       // Navigate to the home page
       Navigator.of(context).pushAndRemoveUntil(
