@@ -1,7 +1,7 @@
 {
   "file_generated_by": "FlutterFire CLI",
   "purpose": "FirebaseAppID & ProjectID for this Firebase app in this directory",
-  "GOOGLE_APP_ID": "1:813541267076:ios:96a682cc95a8a1816554d1",
-  "FIREBASE_PROJECT_ID": "push-notifications-977e4",
-  "GCM_SENDER_ID": "813541267076"
+  "GOOGLE_APP_ID": "1:153065087378:ios:5fb9c8c6cb911df4ca614b",
+  "FIREBASE_PROJECT_ID": "flutternotification-ebd50",
+  "GCM_SENDER_ID": "153065087378"
 }

@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class FirestoreService{
   //get collection of notes
   final CollectionReference information =
-      FirebaseFirestore.instance.collection('Experimental Information');
+      FirebaseFirestore.instance.collection('Experiment Information');
 
   // final CollectionReference questionnaireDocument =
   //   FirebaseFirestore.instance.collection('Questionnaires');
@@ -18,7 +18,7 @@ class FirestoreService{
   }
 
   Future<DocumentSnapshot> getQuestionnaireData() async {
-    return await FirebaseFirestore.instance.collection('Questionnaires').doc('Questionnaire1').get();
+    return await FirebaseFirestore.instance.collection('Questionnaires').doc('Questionnaire1auto').get();
   }
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

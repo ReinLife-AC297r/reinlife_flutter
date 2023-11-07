@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "813541267076",
-    "project_id": "push-notifications-977e4",
-    "storage_bucket": "push-notifications-977e4.appspot.com"
+    "project_number": "153065087378",
+    "project_id": "flutternotification-ebd50",
+    "storage_bucket": "flutternotification-ebd50.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:813541267076:android:385d45226d357e3a6554d1",
+        "mobilesdk_app_id": "1:153065087378:android:c3597f49c7702c5fca614b",
         "android_client_info": {
-          "package_name": "com.example.myapp"
+          "package_name": "com.example.flutterpushnotification"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDMLkMyU_8a0nCyKRtSzjRow8Ile307fpk"
+          "current_key": "AIzaSyBuxX6_ZNEXgPOBeFppY1TOonUC89i6454"
         }
       ],
       "services": {
@@ -26,26 +26,7 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:813541267076:android:67c3ae3a2ca6e4166554d1",
-        "android_client_info": {
-          "package_name": "com.example.mynewproj"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDMLkMyU_8a0nCyKRtSzjRow8Ile307fpk"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:813541267076:android:ebcd993dcfe418e76554d1",
+        "mobilesdk_app_id": "1:153065087378:android:72dd5bfede7f378bca614b",
         "android_client_info": {
           "package_name": "com.example.notificationpractice"
         }
@@ -53,7 +34,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDMLkMyU_8a0nCyKRtSzjRow8Ile307fpk"
+          "current_key": "AIzaSyBuxX6_ZNEXgPOBeFppY1TOonUC89i6454"
         }
       ],
       "services": {
@@ -64,15 +45,15 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:813541267076:android:40d34152ac615d726554d1",
+        "mobilesdk_app_id": "1:153065087378:android:f033491c43bfc299ca614b",
         "android_client_info": {
-          "package_name": "com.example.reinlife"
+          "package_name": "com.example.pushnotofocation"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDMLkMyU_8a0nCyKRtSzjRow8Ile307fpk"
+          "current_key": "AIzaSyBuxX6_ZNEXgPOBeFppY1TOonUC89i6454"
         }
       ],
       "services": {

@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
-              return Text(data['Title']);
+              return Text(data['title']);
             } else if (snapshot.hasError) {
               return Text("Error: ${snapshot.error}");
             }
@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Text('Description: ${data['Description']}', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
                   SizedBox(height: 10.0),
-                  Text('Duration: ${data['Duration']}', style: TextStyle(fontSize: 16.0)),
+                  Text('Duration: ${data['duration']}', style: TextStyle(fontSize: 16.0)),
                   Spacer(),
                   ElevatedButton(
                     onPressed: () {

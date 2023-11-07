@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Question {
-  final String questionId;
+  final int questionId;
   final String questionText;
   final String questionType;
   final int? maxValue;
@@ -20,7 +20,7 @@ class Question {
   });
 
   Question.fromMap(Map<String, dynamic> map)
-      : questionId = map['questionId'],
+      : questionId = map['questionId'].toInt(),
         questionText = map['questionText'],
         questionType = map['questionType'],
         maxValue = map['maxValue'],
@@ -49,7 +49,7 @@ class _QuestionWidgetState extends State<QuestionWidget> {
     return Column(
       children: [
         AppBar(
-          title: Text('Question ${widget.question.questionId}'),
+          title: Text('Question ${widget.question.questionId.toString()}'),
         ),
         Expanded(child: _buildQuestionContent()),
       ],
