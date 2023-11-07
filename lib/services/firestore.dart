@@ -21,6 +21,24 @@ class FirestoreService{
     return await FirebaseFirestore.instance.collection('Questionnaires').doc('Questionnaire1').get();
   }
 
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<void> saveAnswers(String userId, String documentId, Map<String, dynamic> answers) async {
+    DocumentReference documentRef = _firestore
+        .collection('Users')
+        .doc(userId)
+        .collection('user answers')
+        .doc(documentId);
+
+    return documentRef.set(answers, SetOptions(merge: true)).then((value) {
+      print("Answers Saved");
+    }).catchError((error) {
+      print("Failed to save answers: $error");
+    });
+  }
+
+}
+
 
 
 // //create
@@ -63,4 +81,3 @@ class FirestoreService{
   // Future<void> deleteNote(String docID){
   //   return notes.doc(docID).delete();
   // }
-}
