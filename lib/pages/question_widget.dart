@@ -20,7 +20,7 @@ class Question {
   });
 
   Question.fromMap(Map<String, dynamic> map)
-      : questionId = map['questionId'].toInt(),
+      : questionId = map['questionId'],
         questionText = map['questionText'],
         questionType = map['questionType'],
         maxValue = map['maxValue'],

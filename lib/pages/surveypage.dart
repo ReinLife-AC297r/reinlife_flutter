@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 
 class SurveyPage extends StatefulWidget {
   final List<Question> questions;
+  static const route = '/survey_page';
 
   SurveyPage({required this.questions});
 

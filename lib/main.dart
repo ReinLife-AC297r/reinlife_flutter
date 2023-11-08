@@ -8,7 +8,12 @@ import 'package:notificationpractice/pages/surveypage.dart';
 import 'package:notificationpractice/services/firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-final navigatorKey = GlobalKey<NavigatorState>();
+import 'dart:convert';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
+
+ 
+//final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,11 +30,23 @@ class MyApp extends StatelessWidget {
       home: HomePage(),
       navigatorKey: navigatorKey,
       onGenerateRoute: (settings) {
-        if (settings.name == '/notification_screen') {
+         if (settings.name == QuestionnaireScreen.route) {
+          final questionsArray = settings.arguments as List<dynamic>?;
+          // Make sure that questionsArray is not null before passing it to the screen
           return MaterialPageRoute(
-            builder: (context) => QuestionnaireScreen(),
+            builder: (context) => QuestionnaireScreen(questionsArray: questionsArray),
           );
-        }
+         }
+
+        else if (settings.name == SurveyPage.route) {
+            // Ensure the right type of arguments are passed
+            final surveyArguments = settings.arguments as List<Question>;
+            return MaterialPageRoute(
+              builder: (context) => SurveyPage(questions: surveyArguments),
+            );
+    
+    
+    }
         // Handle other routes if needed
         return MaterialPageRoute(builder: (context) => Scaffold());
       },
@@ -38,13 +55,19 @@ class MyApp extends StatelessWidget {
 }
 
 class QuestionnaireScreen extends StatefulWidget {
+  static const route = '/notification_screen';
+  final List<dynamic>? questionsArray;
+
+  QuestionnaireScreen({Key? key, this.questionsArray}) : super(key: key);
+
   @override
   _QuestionnaireScreenState createState() => _QuestionnaireScreenState();
 }
 
-class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
-  List<Question>? questions;
+
+  class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
   FirestoreService firestoreService = FirestoreService();
+  List<Question>? questions;
 
   @override
   void initState() {
@@ -52,23 +75,33 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
     _fetchQuestions();
   }
 
-  _fetchQuestions() async {
-    DocumentSnapshot docSnapshot = await firestoreService.getQuestionnaireData();
-
-    if (docSnapshot.exists) {
-      List<dynamic> questionsArray = docSnapshot.get('questions');
+ _fetchQuestions() async {
+    // Use widget.questionsArray to access the data passed to QuestionnaireScreen
+    if (widget.questionsArray != null) {
+      print('questions are');
+      print(widget.questionsArray);
       setState(() {
-        questions = questionsArray
+        questions = widget.questionsArray!
             .map((q) => Question.fromMap(q as Map<String, dynamic>))
             .toList();
       });
+    } else {
+      DocumentSnapshot docSnapshot = await firestoreService.getQuestionnaireData();
+      if (docSnapshot.exists) {
+        List<dynamic> questionsArray = docSnapshot.get('questions');
+        setState(() {
+          questions = questionsArray
+              .map((q) => Question.fromMap(q as Map<String, dynamic>))
+              .toList();
+        });
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     if (questions == null) {
-      return Scaffold(body: Center(child: CircularProgressIndicator()));
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
     return SurveyPage(questions: questions!);
   }
