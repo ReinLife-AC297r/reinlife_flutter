@@ -2,7 +2,6 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const serviceAccount = require("./service.json");
 
-
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
@@ -15,49 +14,41 @@ if (process.env.FUNCTIONS_EMULATOR) {
 }
 const db = admin.firestore();
 
-exports.sendPushNotification = functions.firestore
-    .document("Questionnaires/{qid}")
+exports.sendUserNotification = functions.firestore
+    .document("Users/{userId}/notification record/{notificationId}")
     .onCreate(async (snapshot, context) => {
       try {
-        const msgData = snapshot.data();
-        const usernames = msgData.usernames;
-        // Fetch tokens for only the specified usernames
-        const tokensSnapshot = await db.collection("Users")
-            .where("username", "in", usernames)
-            .get();
+        const notificationData = snapshot.data();
+        const userId = context.params.userId;
 
-        // Collect the tokens
-        const tokens = [];
-        tokensSnapshot.forEach((doc) => {
-          const userTokens = doc.data().token;
-          if (Array.isArray(userTokens)) {
-            tokens.push(...userTokens);
-          } else {
-            tokens.push(userTokens);
-          }
-        });
-        if (tokens.length) {
-          const multicastMessage = {
+        // Get the user"s token using userId
+        const userDoc = await db.collection("Users").doc(userId).get();
+
+        const userToken = userDoc.data().token;
+
+        // Check if there is a token
+        if (userToken) {
+          const message = {
             notification: {
-              title: "New activity for you",
-              body: "You have a new questionnaire to fill out.",
+              title: notificationData.nTitle || "New Notification",
+              body: notificationData.message || "You have a new notification.",
             },
             data: {
               click_action: "FLUTTER_NOTIFICATION_CLICK",
-              body: JSON.stringify(msgData),
+              body: JSON.stringify(notificationData),
             },
-            tokens: tokens, // an array of tokens
+            token: userToken, // individual token
           };
-          const response = await admin.messaging()
-              .sendEachForMulticast(multicastMessage);
-          console.log("Successfully sent messages:", response.successCount);
+
+          const response = await admin.messaging().send(message);
+          console.log("Successfully sent message:", response);
           return {success: true};
         } else {
-          console.log("No tokens found.");
-          return {success: false, reason: "No tokens found."};
+          console.log(`No token found for user ${userId}.`);
+          return {success: false, reason: `No token found for user ${userId}.`};
         }
       } catch (error) {
-        console.error("Error encountered:", error);
-        return {error: error.code};
+        console.error("Error sending notification:", error);
+        return {error: error.code, success: false};
       }
     });
