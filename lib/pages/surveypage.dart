@@ -5,8 +5,10 @@ import './question_widget.dart';
 import '../services/firestore.dart'; // assuming your FireService class is in this file
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:intl/intl.dart';
-import 'dart:convert';
-import 'package:crypto/crypto.dart';
+// import 'dart:convert';
+// import 'package:crypto/crypto.dart';
+
+
 
 class SurveyPage extends StatefulWidget {
   final List<Question> questions;
@@ -38,12 +40,24 @@ class _SurveyPageState extends State<SurveyPage> {
     }
   }
 
+
+  //
+  // String getShortToken(String deviceToken) {
+  //   var bytes = utf8.encode(deviceToken); // data being hashed
+  //   var sha1Hash = sha1.convert(bytes);
+  //
+  //   // Truncate to 15 bytes
+  //   var truncatedHash = sha1Hash.bytes.sublist(0, 15);
+  //
+  //   // Base64 encode
+  //   var base64Encoded = base64Url.encode(truncatedHash).replaceAll('=', '');
+  //
+  //   return base64Encoded;
+  // }
+
   void _saveAllResponses() async {
     // Obtain the device token
     String deviceToken = await FirebaseMessaging.instance.getToken() ?? 'unknown_device';
-    // Hash the device token using SHA-1
-    var bytes = utf8.encode(deviceToken); // data being hashed
-    var hashedToken = sha1.convert(bytes).toString();
 
     String currentTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
 
@@ -56,7 +70,7 @@ class _SurveyPageState extends State<SurveyPage> {
     };
 
     // Use the device token as the userId and current date as the documentId
-    _firestoreService.saveAnswers(hashedToken, currentTime, dataToSave).then((_) {
+    _firestoreService.saveAnswers(deviceToken, currentTime, dataToSave).then((_) {
       // Handle successful save
       // Navigate to the home page
       Navigator.of(context).pushAndRemoveUntil(
