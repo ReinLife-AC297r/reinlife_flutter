@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class FirestoreService{
   //get collection of notes
@@ -39,7 +40,8 @@ class FirestoreService{
   Future<void> saveAnswers(String userId, String documentId, Map<String, dynamic> answers) async {
     // Reference to the 'Users' collection
     CollectionReference usersRef = _firestore.collection('Users');
-
+    // Obtain the device token
+    String deviceToken = await FirebaseMessaging.instance.getToken() ?? 'unknown_device';
     // Reference to the specific user's document
     DocumentReference userDocRef = usersRef.doc(userId);
 
@@ -48,7 +50,7 @@ class FirestoreService{
 
     // Data to update in the user's document
     Map<String, dynamic> userData = {
-      'test': 'test value' // Replace 'test value' with the actual data you want to store
+      'token': deviceToken // Replace 'test value' with the actual data you want to store
     };
 
     // Start a batch write
