@@ -189,14 +189,27 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
   // function to initialize notifications
   Future initLocalNotifications() async{
-    const iOS = IOSInitializationSettings();
-    const android = AndroidInitializationSettings('@drawable/ic_launcher');
-    const settings = InitializationSettings(android: android, iOS: iOS);
+    // iOS Initialization settings
+    const IOSInitializationSettings initializationSettingsIOS = IOSInitializationSettings(
+      // Add any specific settings you need here
+      requestSoundPermission: true,
+      requestBadgePermission: true,
+      requestAlertPermission: true,
+      //onDidReceiveLocalNotification: onDidReceiveLocalNotification,
+    );
+
+    // Android Initialization settings
+    const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@drawable/ic_launcher');
+
+    // Initialization settings for both platforms
+    const InitializationSettings initializationSettings = InitializationSettings(
+      iOS: initializationSettingsIOS,
+      android: initializationSettingsAndroid,
+    );
+    
 
     await flutterLocalNotificationsPlugin.initialize(
-    const InitializationSettings(
-      android: AndroidInitializationSettings('@drawable/ic_launcher'),
-    ),
+    initializationSettings,
     onSelectNotification: (String? payload) async {
       print('Received payload: $payload');
         final message = RemoteMessage.fromMap(jsonDecode(payload!));
@@ -213,6 +226,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     alert: true,
     badge: true,
     sound: true,
+    provisional:false,
   );
     
      // Set the onSelectNotification callback for when a notification is tapped
@@ -230,9 +244,18 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     FirebaseMessaging.onMessageOpenedApp.listen(handleMessage);
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     
+    String? token1 = await FirebaseMessaging.instance.getAPNSToken();
+    if (token1 != null) {
+      print('apns token is $token1');
+      // Handle the token (e.g., send it to your server)
+       }
+       
     _firebaseMessaging.getToken().then((token) {
       saveToken(token);
     });
+    
+    
+    
     // To handle foreground messages and add them to the notification bar
     FirebaseMessaging.onMessage.listen(( message) {
       print('on message listener!!!!');
@@ -271,14 +294,46 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   }
 
 Future<void> initNotifications() async {
-    await _firebaseMessaging.requestPermission();
-     
+    await _firebaseMessaging.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
+      provisional:false,
+    );
+  
+    _configureFirebaseListeners();
     //FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
     initLocalNotifications();
     initPushNotifications();
     
   }
 
+
+
+void _configureFirebaseListeners() {
+  FirebaseMessaging.instance.onTokenRefresh.listen(_saveTokenToDatabase);
+  FirebaseMessaging.instance.getAPNSToken().then((String? token) {
+    if (token != null) {
+      print('APNS Token: $token');
+      // Save the token to your backend or wherever it's needed
+    }
+  });
+}
+
+
+void _saveTokenToDatabase(String token) async {
+  // Save the token to your backend or wherever it's needed
+  try {
+      await _firestore.collection('Users').doc('caZSPlKe5eUPEkxqwkjp').set({
+        'token': token,
+      }, SetOptions(merge: true));
+      print('Token saved: $token');
+    } catch (e) {
+      print('Error saving token: $e');
+    }
+    print('token is: $token');
+  
+}
 }
 
 

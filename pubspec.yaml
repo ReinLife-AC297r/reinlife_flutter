@@ -40,6 +40,8 @@ dependencies:
   firebase_messaging: ^14.6.9
   cloud_firestore: ^4.12.2
   intl: ^0.18.1
+  overlay_support: 2.1.0
+  #firebase_analytics: ^10.7.1
 #  crypto: ^3.0.3
 
   

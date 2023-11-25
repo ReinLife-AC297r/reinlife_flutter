@@ -18,6 +18,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        
       appBar: AppBar(
         backgroundColor: Colors.amber[500],
         title: FutureBuilder<DocumentSnapshot>(
@@ -56,6 +57,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
+             
             );
           } else if (snapshot.hasError) {
             return Center(child: Text("Error: ${snapshot.error}"));

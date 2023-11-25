@@ -56,6 +56,12 @@ class _SurveyPageState extends State<SurveyPage> {
   // }
 
   void _saveAllResponses() async {
+    String? apnsToken = await FirebaseMessaging.instance.getAPNSToken();
+       if (apnsToken == null) {
+    print('APNS token not set yet');
+    // Handle the scenario where the APNS token is not available
+    return;
+  }
     // Obtain the device token
     String deviceToken = await FirebaseMessaging.instance.getToken() ?? 'unknown_device';
 
