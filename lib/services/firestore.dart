@@ -18,11 +18,58 @@ class FirestoreService{
     return snapshot.docs.first;
   }
 
-  Future<DocumentSnapshot> getQuestionnaireData() async {
-    return await FirebaseFirestore.instance.collection('Questionnaires').doc('Questionnaire1auto').get();
+
+  // Future<DocumentSnapshot> getQuestionnaireData() async {
+  //   return await FirebaseFirestore.instance.collection('Questionnaires').doc('Questionnaire1auto').get();
+  // }
+  Future<Map<String, dynamic>?> getQuestionnaireDoc(int nId) async {
+    try {
+
+      // Query the 'Questionnaires' collection for documents where 'questionnaireId' matches 'nId'
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('Questionnaires')
+          .where('questionnaireId', isEqualTo: nId)
+          .limit(1) // Assuming 'nId' is unique and there should only be one matching document
+          .get();
+
+
+      if (querySnapshot.docs.isNotEmpty) {
+        // Convert the DocumentSnapshot to a Map and return
+        DocumentSnapshot questionnaireDoc = querySnapshot.docs.first;
+        return questionnaireDoc.data() as Map<String, dynamic>?;
+      } else {
+        print('No questionnaire found for the given nId.');
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching questionnaire document: $e');
+      return null;
+    }
   }
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Stream<QuerySnapshot> getNotificationHistory(String userId) {
+    return _firestore.collection('Users').doc(userId).collection('notification record').snapshots();
+  }
+
+  Future<void> addTokenToUser() async {
+    try {
+      String? deviceToken = await FirebaseMessaging.instance.getToken();
+      if (deviceToken == null) {
+        deviceToken = 'unknown_device';
+      }
+
+      await _firestore.collection('Users').doc(deviceToken).set({
+        'token': deviceToken
+      }, SetOptions(merge: true));
+      print("Token added to Firestore: $deviceToken"); // For debugging
+    } catch (e) {
+      print("Error adding token to Firestore: $e");
+      // Handle the error appropriately
+    }
+  }
+
   //
   // Future<void> saveAnswers(String userId, String documentId, Map<String, dynamic> answers) async {
   //   DocumentReference documentRef = _firestore

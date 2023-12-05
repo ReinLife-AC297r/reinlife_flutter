@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notificationpractice/pages/notificationhistory.dart';
 import '../services/firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -50,9 +51,22 @@ class _HomePageState extends State<HomePage> {
                   Spacer(),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/notification_screen');
+                      firestoreService.addTokenToUser();
                     },
-                    child: Text('Go to Survey'),
+                    child: Text('Register User'),
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                     onPressed: () {
+                       //   Navigator.pushNamed(context, '/notification_screen');
+                       // },
+                       Navigator.push(
+                         context,
+                         MaterialPageRoute(
+                             builder: (context) => NotificationHistoryScreen()),
+                       );
+                     },
+                    child: Text('Click to see notification history'),
                   ),
                 ],
               ),
