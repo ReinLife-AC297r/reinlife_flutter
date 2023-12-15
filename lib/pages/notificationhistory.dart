@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:notificationpractice/pages/questionnaire.dart';
 import '../api/firebase_api.dart';
 import '../services/firestore.dart';
+import 'package:notificationpractice/pages/message_page.dart';
+import 'package:intl/intl.dart';
 
 class NotificationHistoryScreen extends StatefulWidget {
   @override
@@ -52,10 +54,11 @@ class _NotificationHistoryScreenState extends State<NotificationHistoryScreen> {
               var nTitle = notificationData['nTitle'] ?? 'No title'; // Fetch the nTitle field
               var message = notificationData['message']; // Fetch the message field
               var time = notificationData['time']; // Fetch the time field
-              String formattedTime = time != null ? (time as Timestamp).toDate().toString() : 'Unknown time';
+              String formattedTime = time != null ? formatFirestoreTimestamp(time) : 'Unknown time';
               var  nId = notificationData['nId'];
+              var nType = notificationData['nType'];
 
-              if (nTitle == 'new questionnaire!') {
+              if (nType == 'questionnaire') {
                 return Card(
                   child: ListTile(
                     title: Text(nTitle),
@@ -90,11 +93,20 @@ class _NotificationHistoryScreenState extends State<NotificationHistoryScreen> {
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(message ?? 'No message'), // Display the message
+                        //Text(message ?? 'No message'), // Display the message
                         SizedBox(height: 4.0),
                         Text(formattedTime), // Display the formatted time
                       ],
                     ),
+                   onTap: () {
+                    navigatorKey.currentState?.pushNamed(
+                    MessagePage.route, // Replace with the actual route name of your messages page
+                    arguments: {
+                      'message': message,
+                      'time': formattedTime,
+                      
+                    },);
+                   } 
                   ),
                   margin: EdgeInsets.all(8.0),
                 );
@@ -107,4 +119,20 @@ class _NotificationHistoryScreenState extends State<NotificationHistoryScreen> {
       ),
     );
   }
+
+
+String formatFirestoreTimestamp(Timestamp timestamp) {
+   
+    // Create a DateTime object from seconds and nanoseconds
+    
+    int seconds = timestamp.seconds ?? 0;
+    int nanoseconds = timestamp.nanoseconds ?? 0; // Handle the case where '_nanoseconds' might be null
+    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(seconds * 1000).add(Duration(microseconds: nanoseconds ~/ 1000));
+    
+    // Format the DateTime object to a string
+    String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(dateTime);
+    return formattedDate;
+    
+}
+
 }
