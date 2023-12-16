@@ -1,145 +1,63 @@
-import 'package:english_words/english_words.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import 'package:http/http.dart' as http;
+import 'package:notificationpractice/api/firebase_api.dart';
+import 'package:notificationpractice/firebase_options.dart';
+import 'package:notificationpractice/pages/home_page.dart';
+import 'package:notificationpractice/pages/question_widget.dart';
+import 'package:notificationpractice/pages/questionnaire.dart';
+import 'package:notificationpractice/pages/surveypage.dart';
+import 'package:notificationpractice/services/firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:notificationpractice/pages/message_page.dart';
+import 'package:intl/intl.dart';
 import 'dart:convert';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
-void main() {
-  runApp(MyApp());
+// Main entry point of the Flutter application.
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Ensures that Flutter bindings are initialized.
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform); // Initialize Firebase with default settings.
+  await FirebaseApi().initNotifications(); // Initialize the notifications through FirebaseApi.
+  runApp(MyApp()); // Run the app with MyApp as the root widget.
 }
 
+// MyApp class - Stateless widget that defines the structure and behavior of the app.
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => MyAppState(),
-      child: MaterialApp(
-        title: 'An App',
-        theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        ),
-        home: MyHomePage(),
-      ),
-    );
-  }
-}
-
-class MyAppState extends ChangeNotifier {
-  var current = WordPair.random();
-
-
-  void getNext(){
-    current= WordPair.random();
-    notifyListeners();
-  }
-
-  var favorites = <WordPair>[];
-
-  void toggleFavorite() {
-    if (favorites.contains(current)) {
-      favorites.remove(current);
-    } else {
-      favorites.add(current);
-    }
-    notifyListeners();
-  }
-
-  Future<String?> getWordFromBackend() async {
-    //Boer:If testing android simulator, should use 10.0.2.2
-    final response = await http.get(Uri.parse('http://10.0.2.2:5000/get-word'));
-    // Boer: If not testing android simulator, should be localhost as below
-    // final response = await http.get(Uri.parse('http://localhost:5000/get-word'));
-    if (response.statusCode == 200) {
-      var jsonResponse = jsonDecode(response.body);
-      return jsonResponse['word'];
-    } else {
-      print('Failed to load word from backend');
-      return 'FlaskFailed';
-    }
-  }
-
-  void fetchNewWord() {
-    getWordFromBackend().then((word) {
-      if (word != null) {
-        print(word); // or do something with the word
-        // For simplicity, I'm updating the `current` variable with new word
-        current = WordPair(word, '!'); // assuming WordPair can take a single string
-        notifyListeners();
-      }
-    });
-  }
-}
-
-
-class MyHomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
-    var pair = appState.current;
-
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('First buttom: random word'),
-            Text('Second button: message from flutter'),
-            BigCard(pair: pair),
-            SizedBox(height: 10),
-
-            ElevatedButton(
-              onPressed: () {
-                appState.getNext();  // ← This instead of print().
-              },
-              child: Text('Next'),
+    // MaterialApp is the top-level widget that controls how the app looks and feels.
+    return MaterialApp(
+      debugShowCheckedModeBanner: false, // Removes the debug banner from the UI.
+      home: HomePage(), // Sets HomePage as the default opening page.
+      navigatorKey: navigatorKey, // Sets the global navigation key.
+      onGenerateRoute: (settings) {
+        // Logic to handle routing based on the route settings.
+        if (settings.name == QuestionnaireScreen.route) {
+          final questionsArray = settings.arguments as List<dynamic>?;
+          // Navigate to the QuestionnaireScreen with questionsArray as arguments.
+          return MaterialPageRoute(
+            builder: (context) => QuestionnaireScreen(questionsArray: questionsArray),
+          );
+        } else if (settings.name == MessagePage.route) {
+          // Handle navigation to MessagePage.
+          final data = settings.arguments as Map<String, dynamic>;
+          return MaterialPageRoute(
+            builder: (context) => MessagePage(
+              message: data['message'] as String,
+              time: data['time'], // Replace with actual time format.
             ),
-
-            ElevatedButton(
-              onPressed: () {
-                appState.fetchNewWord();
-              },
-              child: Text('Fetch from Backend'),
-            ),
-
-
-
-          ],
-        ),
-      ),
+          );
+        }
+        // Default route if none of the conditions above are met.
+        return MaterialPageRoute(builder: (context) => Scaffold());
+      },
     );
   }
-}
 
-class BigCard extends StatelessWidget {
-  const BigCard({
-    super.key,
-    required this.pair,
-  });
-
-  final WordPair pair;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme= Theme.of(context);
-
-    final style = theme.textTheme.displayMedium!.copyWith(
-      color: theme.colorScheme.onPrimary,
-    );
-
-    return Card(
-      color: theme.colorScheme.primary,
-      child: Padding(
-        padding: const EdgeInsets.all(40.0),
-        child: Text(
-          pair.asLowerCase,
-          style: style,
-          semanticsLabel: "${pair.first} ${pair.second}",
-        ),
-      ),
-    );
+  // Function to format Firestore Timestamp into a readable string format.
+  String formatTimestamp(Timestamp timestamp) {
+    DateTime dateTime = timestamp.toDate(); // Convert Firestore Timestamp to DateTime.
+    String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(dateTime); // Format DateTime into a string.
+    return formattedDate;
   }
 }
