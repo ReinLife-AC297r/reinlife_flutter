@@ -119,5 +119,19 @@ Deploy your function to Firebase:
  6. Test Your Setup\
  Add new data to your Firestore collection and ensure your Flutter app receives the notification.
 
+**Note:**
+
+Do not miss allowing your local firbase admin to read an write to the cloud Firestore by setting `allow read, write` to `true`. To do that, Firestore rules should look like the following:
+```
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
+``` 
 
 
