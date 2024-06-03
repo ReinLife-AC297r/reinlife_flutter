@@ -1,4 +1,4 @@
-# ReiLife:
+# ReinLife:
 
 An mHealth Flutter project.
 
@@ -6,7 +6,7 @@ An mHealth Flutter project.
 
 Step 1: follow this tutorial on setting up Flutter and an editor: https://docs.flutter.dev/get-started/install 
 
-Step 2: create a Firebase account using your [Google account](https://firebase.google.com/_d/signin?continue=https%3A%2F%2Ffirebase.google.com%2F%3Fgad_source%3D1%26gclid%3DCjwKCAiA-P-rBhBEEiwAQEXhH8j_MvM6HBU3U6-wnui5gVv7rAP5RaurnILUfYogCBMDqu6RM_PsFBoC1X4QAvD_BwE%26gclsrc%3Daw.ds&prompt=select_account)
+Step 2: create a [Firebase account](https://firebase.google.com/_d/signin?continue=https%3A%2F%2Ffirebase.google.com%2F%3Fgad_source%3D1%26gclid%3DCjwKCAiA-P-rBhBEEiwAQEXhH8j_MvM6HBU3U6-wnui5gVv7rAP5RaurnILUfYogCBMDqu6RM_PsFBoC1X4QAvD_BwE%26gclsrc%3Daw.ds&prompt=select_account) using your Google account
 
 Step 3: Set up [Flutterfire CLI](https://firebase.flutter.dev/docs/cli/?gclid=Cj0KCQiAj_CrBhD-ARIsAIiMxT9ssAjBnXvTHfhDygV_ZngMfzcRgEH8zEtf2poqmDtpy3AMJHKm7r4aArzlEALw_wcB&gclsrc=aw.ds) to connect Flutter app to the firebase in multiple platforms
 
