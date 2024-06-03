@@ -4,7 +4,7 @@ An mHealth Flutter project.
 
 ## Getting Started
 
-Step 1: follow this tutorial on setting up Flutter and an editor: https://docs.flutter.dev/get-started/install 
+Step 1: follow this tutorial on [setting up Flutter and an editor](https://docs.flutter.dev/get-started/install). 
 
 Step 2: create a [Firebase account](https://firebase.google.com/_d/signin?continue=https%3A%2F%2Ffirebase.google.com%2F%3Fgad_source%3D1%26gclid%3DCjwKCAiA-P-rBhBEEiwAQEXhH8j_MvM6HBU3U6-wnui5gVv7rAP5RaurnILUfYogCBMDqu6RM_PsFBoC1X4QAvD_BwE%26gclsrc%3Daw.ds&prompt=select_account) using your Google account
 
